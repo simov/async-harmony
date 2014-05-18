@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title>Async Harmony Examples</title>
+    <!-- async-harmony -->
+    <script src="../lib/async-harmony.js" type="application/javascript;version=1.7" charset="utf-8"></script>
+    <!-- examples -->
+    <script type="application/javascript;version=1.7" charset="utf-8">
+        'using strict';
+
+        var run = {
+            series: () => {
+                async.series([
+                    (args, done) => {
+                        setTimeout(() => {
+                            console.log('job1');
+                            args.job1 = 'job1';
+                            done(new Error('Something bad happened!'));
+                        }, 100);
+                    },
+                    (args, done) => {
+                        setTimeout(() => {
+                            console.log('job2');
+                            args.job2 = 'job2';
+                            done();
+                        }, 100);
+                    }
+                ], (err, result) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log(result);
+                    }
+                });
+            },
+            eachSeries: () => {
+                async.eachSeries([0,1,2], (item, done) => {
+                    setTimeout(() => {
+                        console.log('result'+item);
+                        done(null, 'result'+item);
+                    }, 1000);
+                }, (err, result) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log(result);
+                    }
+                });
+            },
+            eachParallel: () => {
+                async.eachSeries([0,1,2], (item, done) => {
+                    setTimeout(() => {
+                        console.log('result'+item);
+                        done(null, 'result'+item);
+                    }, 1000);
+                }, (err, result) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log(result);
+                    }
+                });
+            },
+            eachLimit: () => {
+                async.eachLimit(3, [0,1,2,3,4,5,6], (item, done) => {
+                    setTimeout(() => {
+                        console.log('result'+item);
+                        done(null, 'result'+item);
+                    }, 1000);
+                }, (err, result) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log(result);
+                    }
+                });
+            },
+            parallel: () => {
+                async.parallel({
+                    job1: (done) => {
+                        setTimeout(() => {
+                            console.log('result1');
+                            done(null, 'result1');
+                        }, 1000);
+                    },
+                    job2: (done) => {
+                        setTimeout(() => {
+                            console.log('result2');
+                            done(new Error('result2'));
+                        }, 1000);
+                    },
+                    job3: (done) => {
+                        setTimeout(() => {
+                            console.log('result3');
+                            done(null, 'result3');
+                        }, 1000);
+                    }
+                }, (err, result) => {
+                    console.log(err);
+                    console.log(result);
+                });
+            },
+            parallelLimit: () => {
+                async.parallelLimit(3, {
+                    job1: (done) => {
+                        setTimeout(() => {
+                            console.log('result1');
+                            done(null, 'result1');
+                        }, 1000);
+                    },
+                    job2: (done) => {
+                        setTimeout(() => {
+                            console.log('result2');
+                            done(new Error('result2'));
+                        }, 1000);
+                    },
+                    job3: (done) => {
+                        setTimeout(() => {
+                            console.log('result3');
+                            done(null, 'result3');
+                        }, 1000);
+                    },
+                    job4: (done) => {
+                        setTimeout(() => {
+                            console.log('result4');
+                            done(null, 'result4');
+                        }, 1000);
+                    },
+                    job5: (done) => {
+                        setTimeout(() => {
+                            console.log('result5');
+                            done(new Error('result5'));
+                        }, 1000);
+                    }
+                }, (err, result) => {
+                    console.log(err);
+                    console.log(result);
+                });
+            },
+            forever: () => {
+                var b = false;
+                async.forever((done) => {
+                    setTimeout(() => {
+                        b = !b;
+                        console.log(b ? 'tik' : 'tak');
+                        done();
+                    }, 1000);
+                }, (err) => {
+                    if (err) console.log('Clock stopped!');
+                });
+            },
+            until: () => {
+                var count = 0;
+                async.until(
+                    () => (count == 5),
+                    (done) => {
+                        setTimeout(() => {
+                            console.log(++count, 'seconds passed!');
+                            done();
+                        }, 1000);
+                    },
+                    (err) => {
+                        if (err) console.log('Counter broke!');
+                        else console.log('Done: 5 seconds passed!');
+                    }
+                );
+            },
+            whilst: () => {
+                var count = 0;
+                async.whilst(
+                    () => (count < 5),
+                    (done) => {
+                        setTimeout(() => {
+                            console.log(++count, 'seconds passed!');
+                            done();
+                        }, 1000);
+                    },
+                    (err) => {
+                        if (err) console.log('Counter broke!');
+                        else console.log('Done: 5 seconds passed!');
+                    }
+                );
+            }	
+        };
+
+    </script>
+</head>
+<body>
+    <ul>
+        <li><a href="#" onclick="run.series();return false">series</a></li>
+    <br />
+        <li><a href="#" onclick="run.eachSeries();return false">eachSeries</a></li>
+        <li><a href="#" onclick="run.eachParallel();return false">eachParallel</a></li>
+        <li><a href="#" onclick="run.eachLimit();return false">eachLimit</a></li>
+    <br />
+        <li><a href="#" onclick="run.parallel();return false">parallel</a></li>
+        <li><a href="#" onclick="run.parallelLimit();return false">parallelLimit</a></li>
+    <br />
+        <li><a href="#" onclick="run.forever();return false">forever</a></li>
+        <li><a href="#" onclick="run.until();return false">until</a></li>
+        <li><a href="#" onclick="run.whilst();return false">whilst</a></li>
+    </ul>
+</body>
+</html>

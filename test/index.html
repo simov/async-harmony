@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title>Async Harmony Test Suite</title>
+    <!-- style -->
+    <link href="../components/mocha/mocha.css" rel="stylesheet" type="text/css" media="all" />
+    <!-- test libs -->
+    <script src="../components/mocha/mocha.js"></script>
+    <script src="../components/chai/chai.js"></script>
+    <!-- async-harmony -->
+    <script src="../lib/async-harmony.js" type="application/javascript;version=1.7" charset="utf-8"></script>
+    <!-- test suite -->
+    <script type="application/javascript;version=1.7" charset="utf-8">
+    chai.should();
+    mocha.setup({
+        ui: 'bdd',
+        globals: ['']
+    });
+    window.addEventListener('load', function (e) {
+        mocha.run();
+    });
+    </script>
+    <script src="series.js" type="application/javascript;version=1.7" charset="utf-8"></script>
+    <script src="each.js" type="application/javascript;version=1.7" charset="utf-8"></script>
+    <script src="parallel.js" type="application/javascript;version=1.7" charset="utf-8"></script>
+    <script src="while.js" type="application/javascript;version=1.7" charset="utf-8"></script>
+</head>
+<body>
+    <div id="mocha"></div>
+</body>
+</html>
