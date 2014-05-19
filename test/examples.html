@@ -48,8 +48,8 @@
                     }
                 });
             },
-            eachParallel: () => {
-                async.eachSeries([0,1,2], (item, done) => {
+            each: () => {
+                async.each([0,1,2], (item, done) => {
                     setTimeout(() => {
                         console.log('result'+item);
                         done(null, 'result'+item);
@@ -191,7 +191,7 @@
         <li><a href="#" onclick="run.series();return false">series</a></li>
     <br />
         <li><a href="#" onclick="run.eachSeries();return false">eachSeries</a></li>
-        <li><a href="#" onclick="run.eachParallel();return false">eachParallel</a></li>
+        <li><a href="#" onclick="run.each();return false">each</a></li>
         <li><a href="#" onclick="run.eachLimit();return false">eachLimit</a></li>
     <br />
         <li><a href="#" onclick="run.parallel();return false">parallel</a></li>
