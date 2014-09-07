@@ -67,6 +67,31 @@ describe('each', function () {
 describe('eachLimit', function () {
     'use strict';
     
+    it('limit', (done) => {
+        var items = [1,2,3,4,5,6,7,8],
+            time  = [25,100,50,50,25,50,100,25],
+            index = 0;
+
+        async.eachLimit(3, items, (item, done) => {
+            setTimeout(() => {
+                done(null, 'result'+item);
+            }, time[index++]);
+        }, (err, result) => {
+            if (err) return done(err);
+            if (result[2] == 'result5')
+                result.should.deep.equal([
+                    'result1', 'result3', 'result5', 'result4',
+                    'result2', 'result8', 'result6', 'result7'
+                ]);
+            else
+                // finish at the same time, actual order is not guaranteed
+                result.should.deep.equal([
+                    'result1', 'result3', 'result4', 'result5',
+                    'result2', 'result8', 'result6', 'result7'
+                ]);
+            done();
+        });
+    });
     it('return result when done', (done) => {
         async.eachLimit(2, [0,1,2], (item, done) => {
             done(null, 'result'+item);
