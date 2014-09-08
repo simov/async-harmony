@@ -1,21 +1,21 @@
 {
-    "name": "async-harmony",
-    "version": "1.0.0",
-    "description": "Asynchronous Harmony",
-    "keywords": ["async", "harmony", "asynchronous", "sequential", "parallel"],
-    "license": "MIT",
-    "homepage": "http://github.com/simov/async-harmony/",
-    "author": {
-        "name": "simo",
-        "email": "simeonvelichkov@gmail.com"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/simov/async-harmony.git"
-    },
-    "devDependencies": {
-        "mocha": "*",
-        "chai": "*"
-    },
-    "main": "./lib/async-harmony"
+  "name": "async-harmony",
+  "version": "1.0.0",
+  "description": "Asynchronous Harmony",
+  "keywords": ["async", "harmony", "asynchronous", "sequential", "parallel"],
+  "license": "MIT",
+  "homepage": "http://github.com/simov/async-harmony/",
+  "author": {
+    "name": "simo",
+    "email": "simeonvelichkov@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/simov/async-harmony.git"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "chai": "*"
+  },
+  "main": "./lib/async-harmony"
 }

@@ -1,14 +1,14 @@
 {
-    "name": "async-harmony",
-    "repo": "simov/async-harmony",
-    "description": "Asynchronous Harmony",
-    "version": "1.0.0",
-    "keywords": ["async", "harmony", "asynchronous", "sequential", "parallel"],
-    "devDependencies": {
-        "mocha": "*",
-        "chai": "*"
-    },
-    "main": "lib/async-harmony.js",
-    "scripts": ["lib/async-harmony.js"],
-    "license": "MIT"
+  "name": "async-harmony",
+  "repo": "simov/async-harmony",
+  "description": "Asynchronous Harmony",
+  "version": "1.0.0",
+  "keywords": ["async", "harmony", "asynchronous", "sequential", "parallel"],
+  "devDependencies": {
+    "mocha": "*",
+    "chai": "*"
+  },
+  "main": "lib/async-harmony.js",
+  "scripts": ["lib/async-harmony.js"],
+  "license": "MIT"
 }
