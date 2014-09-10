@@ -1,5 +1,5 @@
 
-describe('series', function () {
+describe('series', () => {
   'use strict';
 
   it('pass job result to args', (done) => {
@@ -9,9 +9,7 @@ describe('series', function () {
         args.job1.should.equal('result1');
         done();
       }
-    }, (err, results) => {
-      done(err);
-    });
+    }, (err, results) => done(err));
   });
 
   it('pass custom data to args', (done) => {
@@ -24,9 +22,7 @@ describe('series', function () {
         args.data.should.equal('job1');
         done();
       }
-    }, (err, results) => {
-      done(err);
-    });
+    }, (err, results) => done(err));
   });
 
   it('exclude custom data from results', (done) => {
@@ -56,9 +52,7 @@ describe('series', function () {
         args.job1.should.equal('result1');
         done();
       }
-    }, (err, results) => {
-      done(err);
-    });
+    }, (err, results) => done(err));
   });
 
   it('job result in args is shallow copy', (done) => {

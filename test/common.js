@@ -1,5 +1,5 @@
 
-describe('common', function () {
+describe('common', () => {
   'use strict';
   
   it('throw exception', (done) => {
@@ -8,11 +8,7 @@ describe('common', function () {
         (args, done) => {
           throw new Error('Exception thrown');
         }
-      ], (err, results) => {
-        if (err) return done(err);
-        results.should.deep.equal(['result0', 'result1']);
-        done();
-      });
+      ], (err, results) => done());
     } catch (err) {
       err.message.should.equal('Exception thrown');
       done();

@@ -1,6 +1,6 @@
 
 
-describe('parallel', function () {
+describe('parallel', () => {
   'use strict';
   
   it('return result when done', (done) => {
@@ -67,7 +67,7 @@ describe('parallel', function () {
   });
 });
 
-describe('parallelLimit', function () {
+describe('parallelLimit', () => {
   'use strict';
   
   it('limit', (done) => {

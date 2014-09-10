@@ -1,6 +1,6 @@
 
 
-describe('eachSeries', function () {
+describe('eachSeries', () => {
   'use strict';
   
   it('return result when done', (done) => {
@@ -42,7 +42,8 @@ describe('eachSeries', function () {
   });
 });
 
-describe('each', function () {
+
+describe('each', () => {
   'use strict';
   
   it('return result when done', (done) => {
@@ -84,7 +85,8 @@ describe('each', function () {
   });
 });
 
-describe('eachLimit', function () {
+
+describe('eachLimit', () => {
   'use strict';
   
   it('limit', (done) => {
