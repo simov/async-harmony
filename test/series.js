@@ -150,7 +150,7 @@ describe('series', function () {
         done();
       }
     }, (err, results, quit) => {
-      // should.not.exist(err);
+      should.equal(err, null);
       results.should.deep.equal({job1:'result1'});
       quit.should.equal(true);
       done();
