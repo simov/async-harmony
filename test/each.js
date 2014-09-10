@@ -72,6 +72,16 @@ describe('each', function () {
       done();
     });
   });
+  it('terminate execution on quit flag passed', (done) => {
+    async.each([0,1], (item, done) => {
+      done(null, 'result'+item, true);
+    }, (err, results, quit) => {
+      should.equal(err, null);
+      results.should.deep.equal(['result0']);
+      quit.should.equal(true);
+      done();
+    });
+  });
 });
 
 describe('eachLimit', function () {
