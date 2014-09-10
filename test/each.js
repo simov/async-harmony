@@ -96,16 +96,16 @@ describe('eachLimit', function () {
       setTimeout(() => {
         done(null, 'result'+item);
       }, time[index++]);
-    }, (err, result) => {
+    }, (err, results) => {
       if (err) return done(err);
-      if (result[2] == 'result5')
-        result.should.deep.equal([
+      if (results[2] == 'result5')
+        results.should.deep.equal([
           'result1', 'result3', 'result5', 'result4',
           'result2', 'result8', 'result6', 'result7'
         ]);
       else
         // finish at the same time, actual order is not guaranteed
-        result.should.deep.equal([
+        results.should.deep.equal([
           'result1', 'result3', 'result4', 'result5',
           'result2', 'result8', 'result6', 'result7'
         ]);
@@ -115,16 +115,16 @@ describe('eachLimit', function () {
   it('return result when done', (done) => {
     async.eachLimit(2, [0,1,2], (item, done) => {
       done(null, 'result'+item);
-    }, (err, result) => {
+    }, (err, results) => {
       if (err) return done(err);
-      result.should.deep.equal(['result0', 'result1', 'result2']);
+      results.should.deep.equal(['result0', 'result1', 'result2']);
       done();
     });
   });
   it('stop on first error received', (done) => {
     async.eachLimit(2, [0,1], (item, done) => {
       done(new Error('error'+item));
-    }, (err, result) => {
+    }, (err, results) => {
       err.message.should.equal('error0');
       done();
     }, true);
@@ -132,11 +132,21 @@ describe('eachLimit', function () {
   it('pass on errors and store them', (done) => {
     async.eachLimit(2, [0,1,2], (item, done) => {
       done(new Error('error'+item), 'result'+item);
-    }, (err, result) => {
+    }, (err, results) => {
       err[0].message.should.equal('error0');
       err[1].message.should.equal('error1');
       err[2].message.should.equal('error2');
-      result.should.deep.equal(['result0', 'result1', 'result2']);
+      results.should.deep.equal(['result0', 'result1', 'result2']);
+      done();
+    });
+  });
+  it('terminate execution on quit flag passed', (done) => {
+    async.eachLimit(2, [0,1,2], (item, done) => {
+      done(null, 'result'+item, true);
+    }, (err, results, quit) => {
+      should.equal(err, null);
+      results.should.deep.equal(['result0']);
+      quit.should.equal(true);
       done();
     });
   });
