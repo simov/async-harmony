@@ -15,7 +15,7 @@ describe('eachSeries', function () {
   it('stop on first error received', (done) => {
     async.eachSeries([0,1], (item, done) => {
       done(new Error('error'+item));
-    }, (err, result) => {
+    }, (err, results) => {
       err.message.should.equal('error0');
       done();
     });
@@ -23,12 +23,22 @@ describe('eachSeries', function () {
   it('pass on errors and store them', (done) => {
     async.eachSeries([0,1], (item, done) => {
       done(new Error('error'+item), 'result'+item);
-    }, (err, result) => {
+    }, (err, results) => {
       err[0].message.should.equal('error0');
       err[1].message.should.equal('error1');
-      result.should.deep.equal(['result0', 'result1']);
+      results.should.deep.equal(['result0', 'result1']);
       done();
     }, false);
+  });
+  it('terminate execution on quit flag passed', (done) => {
+    async.eachSeries([0,1], (item, done) => {
+      done(null, 'result'+item, true);
+    }, (err, results, quit) => {
+      should.equal(err, null);
+      results.should.deep.equal(['result0']);
+      quit.should.equal(true);
+      done();
+    });
   });
 });
 
@@ -38,16 +48,16 @@ describe('each', function () {
   it('return result when done', (done) => {
     async.each([0,1], (item, done) => {
       done(null, 'result'+item);
-    }, (err, result) => {
+    }, (err, results) => {
       if (err) return done(err);
-      result.should.deep.equal(['result0', 'result1']);
+      results.should.deep.equal(['result0', 'result1']);
       done();
     });
   });
   it('stop on first error received', (done) => {
     async.each([0,1], (item, done) => {
       done(new Error('error'+item));
-    }, (err, result) => {
+    }, (err, results) => {
       err.message.should.equal('error0');
       done();
     }, true);
@@ -55,10 +65,10 @@ describe('each', function () {
   it('pass on errors and store them', (done) => {
     async.each([0,1], (item, done) => {
       done(new Error('error'+item), 'result'+item);
-    }, (err, result) => {
+    }, (err, results) => {
       err[0].message.should.equal('error0');
       err[1].message.should.equal('error1');
-      result.should.deep.equal(['result0', 'result1']);
+      results.should.deep.equal(['result0', 'result1']);
       done();
     });
   });
