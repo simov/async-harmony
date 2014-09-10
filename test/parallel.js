@@ -5,12 +5,8 @@ describe('parallel', function () {
   
   it('return result when done', (done) => {
     async.parallel({
-      job1: (done) => {
-        done(null, 'result1');
-      },
-      job2: (done) => {
-        done(null, 'result2');
-      }
+      job1: (done) => done(null, 'result1'),
+      job2: (done) => done(null, 'result2')
     }, (err, results) => {
       if (err) return done(err);
       results.should.deep.equal({job1:'result1', job2:'result2'});
@@ -19,12 +15,8 @@ describe('parallel', function () {
   });
   it('stop on first error received', (done) => {
     async.parallel({
-      job1: (done) => {
-        done(new Error('error1'));
-      },
-      job2: (done) => {
-        done(new Error('error2'));
-      }
+      job1: (done) => done(new Error('error1')),
+      job2: (done) => done(new Error('error2'))
     }, (err, results) => {
       err.message.should.equal('error1');
       done();
@@ -32,12 +24,8 @@ describe('parallel', function () {
   });
   it('pass on errors and store them', (done) => {
     async.parallel({
-      job1: (done) => {
-        done(new Error('error1'), 'result1');
-      },
-      job2: (done) => {
-        done(new Error('error2'), 'result2');
-      }
+      job1: (done) => done(new Error('error1'), 'result1'),
+      job2: (done) => done(new Error('error2'), 'result2')
     }, (err, results) => {
       err.job1.message.should.equal('error1');
       err.job2.message.should.equal('error2');
@@ -47,12 +35,8 @@ describe('parallel', function () {
   });
   it('pass on errors and store them - array', (done) => {
     async.parallel([
-      (done) => {
-        done(new Error('error1'), 'result1');
-      },
-      (done) => {
-        done(new Error('error2'), 'result2');
-      }
+      (done) => done(new Error('error1'), 'result1'),
+      (done) => done(new Error('error2'), 'result2')
     ], (err, results) => {
       err[0].message.should.equal('error1');
       err[1].message.should.equal('error2');
@@ -62,12 +46,8 @@ describe('parallel', function () {
   });
   it('accept jobs array', (done) => {
     async.parallel([
-      (done) => {
-        done(null, 'result1');
-      },
-      (done) => {
-        done(null, 'result2');
-      }
+      (done) => done(null, 'result1'),
+      (done) => done(null, 'result2')
     ], (err, results) => {
       if (err) return done(err);
       results.should.deep.equal({0:'result1', 1:'result2'});
@@ -76,12 +56,8 @@ describe('parallel', function () {
   });
   it('terminate execution on quit flag passed', (done) => {
     async.parallel({
-      job1: (done) => {
-        done(null, 'result1', true);
-      },
-      job2: (done) => {
-        done(null, 'result2');
-      }
+      job1: (done) => done(null, 'result1', true),
+      job2: (done) => done(null, 'result2')
     }, (err, results, quit) => {
       should.equal(err, null);
       results.should.deep.equal({job1:'result1'});
@@ -126,15 +102,9 @@ describe('parallelLimit', function () {
   });
   it('return result when done', (done) => {
     async.parallelLimit(2, {
-      job1: (done) => {
-        done(null, 'result1');
-      },
-      job2: (done) => {
-        done(null, 'result2');
-      },
-      job3: (done) => {
-        done(null, 'result3');
-      }
+      job1: (done) => done(null, 'result1'),
+      job2: (done) => done(null, 'result2'),
+      job3: (done) => done(null, 'result3')
     }, (err, results) => {
       if (err) return done(err);
       results.should.deep.equal({job1:'result1', job2:'result2', job3:'result3'});
@@ -143,12 +113,9 @@ describe('parallelLimit', function () {
   });
   it('stop on first error received', (done) => {
     async.parallelLimit(2, {
-      job1: (done) => {
-        done(new Error('error1'));
-      },
-      job2: (done) => {
-        done(new Error('error2'));
-      }
+      job1: (done) => done(new Error('error1')),
+      job2: (done) => done(new Error('error2')),
+      job3: (done) => done(new Error('error3'))
     }, (err, results) => {
       err.message.should.equal('error1');
       done();
@@ -156,15 +123,9 @@ describe('parallelLimit', function () {
   });
   it('pass on errors and store them', (done) => {
     async.parallelLimit(2, {
-      job1: (done) => {
-        done(new Error('error1'), 'result1');
-      },
-      job2: (done) => {
-        done(new Error('error2'), 'result2');
-      },
-      job3: (done) => {
-        done(new Error('error3'), 'result3');
-      }
+      job1: (done) => done(new Error('error1'), 'result1'),
+      job2: (done) => done(new Error('error2'), 'result2'),
+      job3: (done) => done(new Error('error3'), 'result3')
     }, (err, results) => {
       err.job1.message.should.equal('error1');
       err.job2.message.should.equal('error2');
@@ -175,12 +136,9 @@ describe('parallelLimit', function () {
   });
   it('terminate execution on quit flag passed', (done) => {
     async.parallelLimit(2,{
-      job1: (done) => {
-        done(null, 'result1', true);
-      },
-      job2: (done) => {
-        done(null, 'result2');
-      }
+      job1: (done) => done(null, 'result1', true),
+      job2: (done) => done(null, 'result2'),
+      job3: (done) => done(null, 'result3')
     }, (err, results, quit) => {
       should.equal(err, null);
       results.should.deep.equal({job1:'result1'});
