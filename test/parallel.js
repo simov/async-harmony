@@ -4,31 +4,17 @@ describe('parallel', function () {
   'use strict';
   
   it('return result when done', (done) => {
-    var obj = {
+    async.parallel({
       job1: (done) => {
         done(null, 'result1');
       },
       job2: (done) => {
         done(null, 'result2');
       }
-    };
-    var arr = [
-      (done) => {
-        done(null, 'result1');
-      },
-      (done) => {
-        done(null, 'result2');
-      }
-    ];
-    async.parallel(obj, (err, result) => {
+    }, (err, results) => {
       if (err) return done(err);
-      result.should.deep.equal({job1:'result1', job2:'result2'});
-
-      async.parallel(arr, (err, result) => {
-        if (err) return done(err);
-        result.should.deep.equal({0:'result1', 1:'result2'});
-        done();
-      });
+      results.should.deep.equal({job1:'result1', job2:'result2'});
+      done();
     });
   });
   it('stop on first error received', (done) => {
@@ -39,39 +25,68 @@ describe('parallel', function () {
       job2: (done) => {
         done(new Error('error2'));
       }
-    }, (err, result) => {
+    }, (err, results) => {
       err.message.should.equal('error1');
       done();
     }, true);
   });
   it('pass on errors and store them', (done) => {
-    var obj = {
+    async.parallel({
       job1: (done) => {
         done(new Error('error1'), 'result1');
       },
       job2: (done) => {
         done(new Error('error2'), 'result2');
       }
-    };
-    var arr = [
+    }, (err, results) => {
+      err.job1.message.should.equal('error1');
+      err.job2.message.should.equal('error2');
+      results.should.deep.equal({job1:'result1', job2:'result2'});
+      done();
+    });
+  });
+  it('pass on errors and store them - array', (done) => {
+    async.parallel([
       (done) => {
         done(new Error('error1'), 'result1');
       },
       (done) => {
         done(new Error('error2'), 'result2');
       }
-    ];
-    async.parallel(obj, (err, result) => {
-      err.job1.message.should.equal('error1');
-      err.job2.message.should.equal('error2');
-      result.should.deep.equal({job1:'result1', job2:'result2'});
-
-      async.parallel(arr, (err, result) => {
-        err[0].message.should.equal('error1');
-        err[1].message.should.equal('error2');
-        result.should.deep.equal({0:'result1', 1:'result2'});
-        done();
-      });
+    ], (err, results) => {
+      err[0].message.should.equal('error1');
+      err[1].message.should.equal('error2');
+      results.should.deep.equal({0:'result1', 1:'result2'});
+      done();
+    });
+  });
+  it('accept jobs array', (done) => {
+    async.parallel([
+      (done) => {
+        done(null, 'result1');
+      },
+      (done) => {
+        done(null, 'result2');
+      }
+    ], (err, results) => {
+      if (err) return done(err);
+      results.should.deep.equal({0:'result1', 1:'result2'});
+      done();
+    });
+  });
+  it('terminate execution on quit flag passed', (done) => {
+    async.parallel({
+      job1: (done) => {
+        done(null, 'result1', true);
+      },
+      job2: (done) => {
+        done(null, 'result2');
+      }
+    }, (err, results, quit) => {
+      should.equal(err, null);
+      results.should.deep.equal({job1:'result1'});
+      quit.should.equal(true);
+      done();
     });
   });
 });
@@ -93,16 +108,16 @@ describe('parallelLimit', function () {
       job6: (done) => {setTimeout(() => done(null, 'result6'), time[index++])},
       job7: (done) => {setTimeout(() => done(null, 'result7'), time[index++])},
       job8: (done) => {setTimeout(() => done(null, 'result8'), time[index++])}
-    }, (err, result) => {
+    }, (err, results) => {
       if (err) return done(err);
-      if (Object.keys(result)[2] == 'job5')
-        result.should.deep.equal({
+      if (Object.keys(results)[2] == 'job5')
+        results.should.deep.equal({
           job1: 'result1', job3: 'result3', job5: 'result5', job4: 'result4',
           job2: 'result2', job8: 'result8', job6: 'result6', job7: 'result7'
         });
       else
         // finish at the same time, actual order is not guaranteed
-        result.should.deep.equal({
+        results.should.deep.equal({
           job1: 'result1', job3: 'result3', job4: 'result4', job5: 'result5',
           job2: 'result2', job8: 'result8', job6: 'result6', job7: 'result7'
         });
@@ -120,9 +135,9 @@ describe('parallelLimit', function () {
       job3: (done) => {
         done(null, 'result3');
       }
-    }, (err, result) => {
+    }, (err, results) => {
       if (err) return done(err);
-      result.should.deep.equal({job1:'result1', job2:'result2', job3:'result3'});
+      results.should.deep.equal({job1:'result1', job2:'result2', job3:'result3'});
       done();
     });
   });
@@ -134,7 +149,7 @@ describe('parallelLimit', function () {
       job2: (done) => {
         done(new Error('error2'));
       }
-    }, (err, result) => {
+    }, (err, results) => {
       err.message.should.equal('error1');
       done();
     }, true);
@@ -150,11 +165,11 @@ describe('parallelLimit', function () {
       job3: (done) => {
         done(new Error('error3'), 'result3');
       }
-    }, (err, result) => {
+    }, (err, results) => {
       err.job1.message.should.equal('error1');
       err.job2.message.should.equal('error2');
       err.job3.message.should.equal('error3');
-      result.should.deep.equal({job1:'result1', job2:'result2', job3:'result3'});
+      results.should.deep.equal({job1:'result1', job2:'result2', job3:'result3'});
       done();
     });
   });
