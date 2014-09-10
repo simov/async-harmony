@@ -4,9 +4,7 @@ describe('series', function () {
 
   it('pass job result to args', (done) => {
     async.series({
-      job1: (args, done) => {
-        done(null, 'result1');
-      },
+      job1: (args, done) => done(null, 'result1'),
       job2: (args, done) => {
         args.job1.should.equal('result1');
         done();
@@ -65,9 +63,7 @@ describe('series', function () {
 
   it('job result in args is shallow copy', (done) => {
     async.series({
-      job1: (args, done) => {
-        done(null, {data:'result1'});
-      },
+      job1: (args, done) => done(null, {data:'result1'}),
       job2: (args, done) => {
         args.job1.data = 'result2';
         done();
@@ -81,12 +77,8 @@ describe('series', function () {
   
   it('stop on first error received', (done) => {
     async.series({
-      job1: (args, done) => {
-        done(new Error('error1'));
-      },
-      job2: (args, done) => {
-        done(new Error('error2'));
-      }
+      job1: (args, done) => done(new Error('error1')),
+      job2: (args, done) => done(new Error('error2'))
     }, (err, results) => {
       err.message.should.equal('error1');
       done();
@@ -95,12 +87,8 @@ describe('series', function () {
 
   it('pass on errors and store them', (done) => {
     async.series({
-      job1: (args, done) => {
-        done(new Error('error1'), 'result1');
-      },
-      job2: (args, done) => {
-        done(new Error('error2'), 'result2');
-      }
+      job1: (args, done) => done(new Error('error1'), 'result1'),
+      job2: (args, done) => done(new Error('error2'), 'result2')
     }, (err, results) => {
       err.job1.message.should.equal('error1');
       err.job2.message.should.equal('error2');
@@ -111,12 +99,8 @@ describe('series', function () {
 
   it('accept jobs array', (done) => {
     async.series([
-      (args, done) => {
-        done(null, 'result1');
-      },
-      (args, done) => {
-        done(null, 'result2');
-      }
+      (args, done) => done(null, 'result1'),
+      (args, done) => done(null, 'result2')
     ], (err, results) => {
       if (err) return done(err);
       results.should.deep.equal({0:'result1', 1:'result2'});
@@ -126,12 +110,8 @@ describe('series', function () {
 
   it('pass on errors and store them - array', (done) => {
     async.series([
-      (args, done) => {
-        done(new Error('error1'), 'result1');
-      },
-      (args, done) => {
-        done(new Error('error2'), 'result2');
-      }
+      (args, done) => done(new Error('error1'), 'result1'),
+      (args, done) => done(new Error('error2'), 'result2')
     ], (err, results) => {
       err[0].message.should.equal('error1');
       err[1].message.should.equal('error2');
@@ -142,13 +122,8 @@ describe('series', function () {
 
   it('terminate execution on quit flag passed', (done) => {
     async.series({
-      job1: (args, done) => {
-        done(null, 'result1', true);
-      },
-      job2: (args, done) => {
-        done(null, 'result2');
-        done();
-      }
+      job1: (args, done) => done(null, 'result1', true),
+      job2: (args, done) => done(null, 'result2')
     }, (err, results, quit) => {
       should.equal(err, null);
       results.should.deep.equal({job1:'result1'});
