@@ -173,4 +173,19 @@ describe('parallelLimit', function () {
       done();
     });
   });
+  it('terminate execution on quit flag passed', (done) => {
+    async.parallelLimit(2,{
+      job1: (done) => {
+        done(null, 'result1', true);
+      },
+      job2: (done) => {
+        done(null, 'result2');
+      }
+    }, (err, results, quit) => {
+      should.equal(err, null);
+      results.should.deep.equal({job1:'result1'});
+      quit.should.equal(true);
+      done();
+    });
+  });
 });
