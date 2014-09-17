@@ -1,6 +1,6 @@
 {
   "name": "async-harmony",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Asynchronous Harmony",
   "keywords": ["async", "harmony", "asynchronous", "sequential", "parallel"],
   "license": "MIT",
