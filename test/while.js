@@ -1,6 +1,6 @@
 
 
-describe('forever', function () {
+describe('forever', () => {
   it('process until error occures', (done) => {
     var result = [], count = 0;
     async.forever((done) => {
@@ -15,7 +15,7 @@ describe('forever', function () {
   });
 });
 
-describe('until', function () {
+describe('until', () => {
   it('process until test condition is met', (done) => {
     var result = [], count = 0;
     async.until(
@@ -49,7 +49,7 @@ describe('until', function () {
   });
 });
 
-describe('whilst', function () {
+describe('whilst', () => {
   it('process while test condition is true', (done) => {
     var result = [], count = 0;
     async.whilst(
